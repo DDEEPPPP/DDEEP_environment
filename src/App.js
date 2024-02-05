@@ -4,6 +4,7 @@ import Banner from './components/Banner';
 import Header from './components/Header';
 import Search from './components/Search';
 import Row from './components/Row';
+import MainPage from './components/pages/MainPage/index';
 
 const LayOut = () => {
   return (
@@ -18,10 +19,11 @@ const LayOut = () => {
 function App() {
   return (
     <div className="App">
-      <Header />
+      {/* <Header />
       <Search />
       <Banner />
-      <Row />
+      <Row /> */}
+      <MainPage />
     </div>
   );
 }
