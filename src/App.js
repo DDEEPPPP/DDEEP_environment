@@ -7,6 +7,7 @@ import Row from './components/Row';
 import MainPage from './components/pages/MainPage/index';
 import DetailPage from './components/pages/DetailPage';
 import SearchPage from './components/pages/SearchPage';
+import JoinPage from './components/pages/JoinPage';
 
 const LayOut = () => {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LayOut />}>
           <Route index element={<MainPage />} />
+          <Route path="join" element={<JoinPage />} />
           <Route path="detail" element={<DetailPage />} />
           <Route path="search" element={<SearchPage />} />
         </Route>
