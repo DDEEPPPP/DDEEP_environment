@@ -11,6 +11,7 @@ const Header = () => {
       <Nav>
         <a href="#">관광지</a>
         <a href="#">행사</a>
+        <a href="#">회원가입</a>
       </Nav>
     </Container>
   );
