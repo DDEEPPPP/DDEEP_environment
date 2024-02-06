@@ -8,6 +8,7 @@ import MainPage from './components/pages/MainPage/index';
 import DetailPage from './components/pages/DetailPage';
 import SearchPage from './components/pages/SearchPage';
 import JoinPage from './components/pages/JoinPage';
+import { Reset } from 'styled-reset';
 
 const LayOut = () => {
   return (
@@ -22,6 +23,7 @@ const LayOut = () => {
 function App() {
   return (
     <div className="App">
+      <Reset />
       <Routes>
         <Route path="/" element={<LayOut />}>
           <Route index element={<MainPage />} />
