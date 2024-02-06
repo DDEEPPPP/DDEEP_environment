@@ -30,11 +30,10 @@ const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  border: 1px solid #d5d5d5;
+  border-bottom: 1px solid #d5d5d5;
   z-index: 3;
   background-color: #fff;
-  border: 1px solid background: rgba(0, 0, 0, 0.60);
-  padding: 10px;
+  padding: 36px;
   box-sizing: border-box;
 `;
 
