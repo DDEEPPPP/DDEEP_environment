@@ -1,11 +1,14 @@
 import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: 'https://api.visitjeju.net/vsjApi/contents/searchlist',
+const tourAPIInstance = axios.create({
+  baseURL: 'https://apis.data.go.kr/B551011/KorService1',
   params: {
-    apikey: '70axhgpopy3z4k5f',
-    local: 'kr',
+    serviceKey: 'Kwl/3od2qZkAp+XQdSiNgZIfbwLK5khnbyTh9AEENMTvkLDpmxwfVFcfAuKlW4fQcp+te/aBGGnzUcLOgbVaLg==',
+    _type: 'json',
+    MobileOS: 'ETC',
+    MobileApp: 'AppTest',
+    areaCode: '39',
   },
 });
 
-export default instance;
+export { tourAPIInstance };

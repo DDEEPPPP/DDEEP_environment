@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getFestival } from '../../../api/testapi/get/getFestival';
 import Banner from '../../Banner';
 import Header from '../../Header';
 import Row from '../../Row';
 
+import axios, { tourAPIInstance } from '../../../api/axios';
+// import axios from 'axios';
+import request from '../../../api/request';
+
 const MainPage = () => {
   //mockData 받아오기 추후 각 컴포넌트 별로 api 받기
   const [data, setData] = useState([]);
+  const [mockData, setMockData] = useState([]);
   useEffect(() => {
     const fetchMockData = async () => {
       try {
@@ -19,14 +24,42 @@ const MainPage = () => {
     };
     fetchMockData();
   }, []);
+
+  useEffect(() => {
+    const fetchAreaBasedList = async () => {
+      try {
+        const response = await tourAPIInstance.get(request.fetchAreaBased);
+        const res = response.data.response.body.items.item;
+        console.log('관광지 :', res);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    const fetchFestivals = async () => {
+      const params = {
+        eventStartDate: '20170901',
+      };
+      try {
+        const response = await tourAPIInstance.get(request.fetchFestivals, { params });
+        console.log(response.data);
+        const res = response.data.response.body.items.item;
+        console.log('축제 :', res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchFestivals();
+    fetchAreaBasedList();
+  }, []);
+
   return (
     <Container className="App">
       <Header />
       <Banner />
-      <Row title="관광지" id="RM" data={data} />
-      <Row title="팝업스토어" id="PS" data={data} />
-      <Row title="플리마켓" id="FM" data={data} />
-      <Row title="페스티벌" id="FV" data={data} />
+      <Row title="관광지" id="RM" url={request.fetchAreaBased} data={data} />
+      <Row title="팝업스토어" id="PS" url={request.fetchFestivals} data={data} />
+      <Row title="플리마켓" id="FM" url={request.fetchAreaBased} data={data} />
+      <Row title="페스티벌" id="FV" url={request.fetchFestivals} data={data} />
     </Container>
   );
 };
