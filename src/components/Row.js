@@ -1,25 +1,68 @@
-import React, { useState } from 'react';
+import axios from '../api/axios';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const Row = ({ title, id, data }) => {
+const Row = ({ title, id, url, data }) => {
   // const [festivals, setFestivals] = useState([]); 추후 group별로 api 받아오기 현재는 mockData MainPage에서 props로 받아옴 배열 5개로 끊기
-  console.log(data);
+  const [datas, setDatas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getRandomArray = (array, num) => {
+    if (array.length <= num) {
+      return array.slice();
+    }
+    const shuffleArray = array.slice().sort(() => 0.5 - Math.random());
+    return shuffleArray.slice(0, num);
+  };
+
+  const fetchInfoData = useCallback(async () => {
+    try {
+      let response;
+      if (url === '/searchFestival1') {
+        const params = {
+          eventStartDate: '20170901',
+        };
+        response = await axios.get(url, { params });
+      } else {
+        response = await axios.get(url);
+      }
+      const datasArray = response?.data?.response?.body?.items?.item || [];
+      const shuffleDatas = getRandomArray(datasArray, 5);
+      setDatas(shuffleDatas);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [url]);
+
+  useEffect(() => {
+    (async () => {
+      await fetchInfoData();
+    })();
+  }, [fetchInfoData]);
+  console.log('Data: ', datas);
+
+  if (loading) {
+    return <div>로딩중</div>;
+  }
   return (
     <Container>
       <h2>{title}</h2>
-      <Content>
+      <Content id={id}>
         {/* map돌리기 */}
-        {data.map((data) => (
-          <Wrap>
+        {datas.map((data) => (
+          <Wrap key={data.contentid}>
             <a>
               <Image>
-                <img src={data.image} />
-                <State $isState={data.state}>{data.state}</State>
+                <img src={data.firstimage} />
+                {/* <State $isState={data.state}>{data.state}</State> */}
               </Image>
               <Text>
                 <h3>{data.title}</h3>
-                <span>{data.date}</span>
-                <span>{data.place}</span>
+                <span>
+                  {data.eventstartdate} ~ {data.eventenddate}
+                </span>
+                <span>{data.addr1}</span>
               </Text>
             </a>
           </Wrap>

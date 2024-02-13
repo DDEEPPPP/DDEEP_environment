@@ -8,7 +8,8 @@ const tourAPIInstance = axios.create({
     MobileOS: 'ETC',
     MobileApp: 'AppTest',
     areaCode: '39',
+    numOfRows: '20',
   },
 });
 
-export { tourAPIInstance };
+export default tourAPIInstance;
