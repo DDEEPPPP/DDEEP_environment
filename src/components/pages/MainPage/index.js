@@ -29,9 +29,9 @@ const MainPage = () => {
     <Container className="App">
       <Header />
       <Banner />
-      {/* <Row title="관광지" id="RM" url={request.fetchAreaBased} data={data} /> */}
-      {/* <Row title="팝업스토어" id="PS" url={request.fetchFestivals} data={data} />
-      <Row title="플리마켓" id="FM" url={request.fetchAreaBased} data={data} /> */}
+      <Row title="관광지" id="RM" url={request.fetchAreaBased} data={data} />
+      <Row title="팝업스토어" id="PS" url={request.fetchFestivals} data={data} />
+      <Row title="플리마켓" id="FM" url={request.fetchAreaBased} data={data} />
       <Row title="페스티벌" id="FV" url={request.fetchFestivals} data={data} />
     </Container>
   );
