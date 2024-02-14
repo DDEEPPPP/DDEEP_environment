@@ -15,6 +15,22 @@ const Row = ({ title, id, url, data }) => {
     return shuffleArray.slice(0, num);
   };
 
+  const isOpenCheck = (array) => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const date = `${year}${month}${day}`;
+    const eventState = array.map((data) => {
+      const isOpen = date >= data.eventstartdate && date <= data.eventenddate;
+      return {
+        ...data,
+        isOpen,
+      };
+    });
+    return eventState;
+  };
+
   const fetchInfoData = useCallback(async () => {
     try {
       let response;
@@ -28,7 +44,13 @@ const Row = ({ title, id, url, data }) => {
       }
       const datasArray = response?.data?.response?.body?.items?.item || [];
       const shuffleDatas = getRandomArray(datasArray, 5);
-      setDatas(shuffleDatas);
+      if (url === '/searchFestival1') {
+        const openState = isOpenCheck(shuffleDatas);
+        setDatas(openState);
+      } else {
+        setDatas(shuffleDatas);
+      }
+
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,6 +62,7 @@ const Row = ({ title, id, url, data }) => {
       await fetchInfoData();
     })();
   }, [fetchInfoData]);
+
   console.log('Data: ', datas);
 
   if (loading) {
@@ -55,7 +78,9 @@ const Row = ({ title, id, url, data }) => {
             <a>
               <Image>
                 <img src={data.firstimage} />
-                {/* <State $isState={data.state}>{data.state}</State> */}
+                {url === '/searchFestival1' && (
+                  <State $isState={data.isOpen}>{data.isOpen ? '진행중' : '진행 완료'}</State>
+                )}
               </Image>
               <Text>
                 <h3>{data.title}</h3>
@@ -113,6 +138,12 @@ const Image = styled.div`
   height: 245px;
   position: relative;
   overflow: hidden;
+
+  img {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const Text = styled.div`
@@ -127,7 +158,7 @@ const State = styled.span`
   color: #fff;
   padding: 2px 5px;
   border-radius: 4px;
-  background-color: ${({ $isState }) => ($isState === '개최중' ? 'rgb(0, 204, 51)' : 'rgb(204, 0, 51)')};
+  background-color: ${({ $isState }) => ($isState ? 'rgb(0, 204, 51)' : 'rgb(204, 0, 51)')};
   font-size: 12px;
   font-weight: 800;
   line-height: 24px;
