@@ -28,7 +28,7 @@ function App() {
         <Route path="/" element={<LayOut />}>
           <Route index element={<MainPage />} />
           <Route path="join" element={<JoinPage />} />
-          <Route path="detail" element={<DetailPage />} />
+          <Route path=":contentType/:contentId" element={<DetailPage />} />
           <Route path="search" element={<SearchPage />} />
         </Route>
       </Routes>

@@ -1,41 +1,82 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-const { kakao } = window;
+import axios from '../../../api/axios';
+import request from '../../../api/request';
+import KakaoMap from '../../KakaoMap';
 
 const DetailPage = () => {
+  const [content, setContent] = useState({});
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const url = location.pathname.split('/');
+  const contentType = url[1];
+  const contentId = url[2];
+
+  // 길찾기버튼 온클릭함수
+  const clickLoadFind = () => {
+    const openWindow = window.open(
+      `https://map.kakao.com/link/to/${content.title},${content.mapy},${content.mapx}`,
+      '_blank'
+    );
+    if (openWindow) {
+      openWindow.location.href = `https://map.kakao.com/link/to/${content.title},${content.mapy},${content.mapx}`;
+    }
+  };
+
+  const fetchDetailData = useCallback(async () => {
+    try {
+      const params = {
+        contentId: contentId,
+        defaultYN: 'Y',
+        firstImageYN: 'Y',
+        addrinfoYN: 'Y',
+        mapinfoYN: 'Y',
+        overviewYN: 'Y',
+      };
+      const response = await axios.get(request.fetchDetailInfo, { params });
+      const item = response?.data?.response?.body?.items?.item[0] || {};
+      setContent(item);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [contentId]);
+
   useEffect(() => {
-    const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    const options = {
-      // 지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심 좌표 위도, 경도
-      level: 3, // 지도의 레벨 (확대, 축소 정도)
-    };
-    const map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-  }, []);
+    (async () => {
+      await fetchDetailData();
+    })();
+  }, [fetchDetailData]);
+
+  console.log('Item:', content);
+  if (loading) {
+    return <div>로딩중</div>;
+  }
 
   return (
     <Wrap>
-      <ContentHeader>
+      <ContentHeader style={{ background: `url(${content.firstimage}) 50% 50% / cover no-repeat` }}>
         <ContentTitleSection>
           <Title>
-            <h2>title</h2>
+            <h2>{content.title}</h2>
           </Title>
           <ContentTitleInfo>
             <h3>info</h3>
             <div>
               <p>주소</p>
-              <p>어딘가</p>
+              <p>
+                {content.addr1}
+                &nbsp;
+                {content.addr2}
+              </p>
             </div>
             <div>
               <p>연락처</p>
-              <p>000-0000-0000</p>
+              <p>{content.tel}</p>
             </div>
             <div>
-              <p>홈페이지</p>
-              <p>여기</p>
-            </div>
-            <div>
-              <Button>길찾기</Button>
+              <Button onClick={clickLoadFind}>길찾기</Button>
             </div>
           </ContentTitleInfo>
         </ContentTitleSection>
@@ -43,14 +84,7 @@ const DetailPage = () => {
       <ContentMain>
         <div>여긴 상세 정보</div>
         <div>
-          여긴 지도
-          <div
-            id="map"
-            style={{
-              width: '500px',
-              height: '500px',
-            }}
-          ></div>
+          <KakaoMap mapx={content.mapx} mapy={content.mapy} mapLevel={content.mlevel} />
         </div>
       </ContentMain>
     </Wrap>
@@ -65,7 +99,6 @@ const Wrap = styled.div`
 `;
 
 const ContentHeader = styled.div`
-  background-color: skyblue;
   padding: 0 calc(3.5vw + 5px);
 `;
 
@@ -101,7 +134,7 @@ const ContentTitleInfo = styled.div`
   }
 
   div {
-    margin-top: 10px;
+    margin-top: 15px;
     clear: both;
   }
 
@@ -111,6 +144,7 @@ const ContentTitleInfo = styled.div`
   }
 
   div:last-child {
+    margin-top: 40px;
     clear: both;
   }
 `;
