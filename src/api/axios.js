@@ -7,8 +7,6 @@ const tourAPIInstance = axios.create({
     _type: 'json',
     MobileOS: 'ETC',
     MobileApp: 'AppTest',
-    areaCode: '39',
-    numOfRows: '20',
   },
 });
 

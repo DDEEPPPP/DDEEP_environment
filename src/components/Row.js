@@ -1,11 +1,14 @@
 import axios from '../api/axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Row = ({ title, id, url, data }) => {
   // const [festivals, setFestivals] = useState([]); 추후 group별로 api 받아오기 현재는 mockData MainPage에서 props로 받아옴 배열 5개로 끊기
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const getRandomArray = (array, num) => {
     if (array.length <= num) {
@@ -34,14 +37,17 @@ const Row = ({ title, id, url, data }) => {
   const fetchInfoData = useCallback(async () => {
     try {
       let response;
+      let params = {
+        areaCode: '39',
+        numOfRows: '20',
+      };
       if (url === '/searchFestival1') {
-        const params = {
-          eventStartDate: '20170901',
+        params = {
+          ...params,
+          eventStartDate: '19900101',
         };
-        response = await axios.get(url, { params });
-      } else {
-        response = await axios.get(url);
       }
+      response = await axios.get(url, { params });
       const datasArray = response?.data?.response?.body?.items?.item || [];
       const shuffleDatas = getRandomArray(datasArray, 5);
       if (url === '/searchFestival1') {
@@ -75,7 +81,7 @@ const Row = ({ title, id, url, data }) => {
         {/* map돌리기 */}
         {datas.map((data) => (
           <Wrap key={data.contentid}>
-            <a>
+            <div onClick={() => navigate(`${url}/${data.contentid}`)}>
               <Image>
                 <img src={data.firstimage} />
                 {url === '/searchFestival1' && (
@@ -89,7 +95,7 @@ const Row = ({ title, id, url, data }) => {
                 </span>
                 <span>{data.addr1}</span>
               </Text>
-            </a>
+            </div>
           </Wrap>
         ))}
       </Content>
@@ -124,7 +130,7 @@ const Wrap = styled.div`
   cursor: pointer;
   transition: all 0.25s;
 
-  a {
+  div {
     height: 60%;
   }
 
