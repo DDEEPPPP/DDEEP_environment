@@ -4,15 +4,17 @@ import styled from 'styled-components';
 const Header = () => {
   return (
     <Container>
-      <Logo href="/">
-        <img alt="Logo" onClick={() => (window.location.href = '/')} />
-        로고
-      </Logo>
-      <Nav>
-        <a href="#">관광지</a>
-        <a href="#">행사</a>
-        <a href="#">회원가입</a>
-      </Nav>
+      <Inner>
+        <Logo href="/">
+          <img alt="Logo" onClick={() => (window.location.href = '/')} />
+          로고
+        </Logo>
+        <Nav>
+          <a href="#">관광지</a>
+          <a href="#">행사</a>
+          <a href="#">회원가입</a>
+        </Nav>
+      </Inner>
     </Container>
   );
 };
@@ -26,15 +28,21 @@ const Container = styled.header`
   right: 0;
   height: 70px;
   width: 100%;
+  border-bottom: 1px solid #d5d5d5;
+  z-index: 3;
+  background-color: #fff;
+  display: flex;
+  padding: 0 36px;
+  box-sizing: border-box;
+`;
+
+const Inner = styled.div`
+  margin: 0 auto;
+  width: 1290px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  border-bottom: 1px solid #d5d5d5;
-  z-index: 3;
-  background-color: #fff;
-  padding: 36px;
-  box-sizing: border-box;
 `;
 
 const Logo = styled.a``;
