@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/DDEEP_environment/static/css/main.68e5960b.css",
+    "main.js": "/DDEEP_environment/static/js/main.1d3ee8ff.js",
+    "static/js/787.a4d2d2c8.chunk.js": "/DDEEP_environment/static/js/787.a4d2d2c8.chunk.js",
+    "index.html": "/DDEEP_environment/index.html",
+    "main.68e5960b.css.map": "/DDEEP_environment/static/css/main.68e5960b.css.map",
+    "main.1d3ee8ff.js.map": "/DDEEP_environment/static/js/main.1d3ee8ff.js.map",
+    "787.a4d2d2c8.chunk.js.map": "/DDEEP_environment/static/js/787.a4d2d2c8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.68e5960b.css",
+    "static/js/main.1d3ee8ff.js"
+  ]
+}
