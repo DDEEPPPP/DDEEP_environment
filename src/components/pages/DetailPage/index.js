@@ -14,7 +14,7 @@ const DetailPage = () => {
   const contentId = url[2];
   const [upContentState, setUpContentState] = useState({
     listDetail: false,
-    listMap: false,
+    listMap: true,
   });
 
   // 길찾기버튼 온클릭함수
@@ -87,7 +87,7 @@ const DetailPage = () => {
             </div>
             <div>
               <p>연락처</p>
-              <p>{content.tel}</p>
+              {content.tel ? <p>{content.tel}</p> : <p>없음</p>}
             </div>
             <div>
               <Button onClick={clickLoadFind}>길찾기</Button>
@@ -107,7 +107,7 @@ const DetailPage = () => {
             <h2>
               <a onClick={() => upContentSection('listMap')}>지도</a>
             </h2>
-            <MapContainer id="listMap">
+            <MapContainer id="listMap" $isMapOpen={upContentState.listMap}>
               <h3>{content.title}</h3>
               <KakaoMap mapx={content.mapx} mapy={content.mapy} mapLevel={content.mlevel} />
             </MapContainer>
@@ -178,15 +178,9 @@ const ContentTitleInfo = styled.div`
 
 const ContentMain = styled.div`
   padding: 0 calc(3.5vw + 5px);
-  width: 1290px;
-  margin: 0 auto;
 
   ul > li {
     margin-top: 10px;
-  }
-
-  ul > li > div {
-    padding: 36px 10px 40px;
   }
 
   ul > li > h2 > a {
@@ -213,6 +207,10 @@ const Button = styled.p`
 `;
 
 const MapContainer = styled.div`
+  padding: 36px 10px 40px;
+  visibility: ${({ $isMapOpen }) => ($isMapOpen ? 'visible' : 'hidden')};
+  opacity: ${({ $isMapOpen }) => ($isMapOpen ? '1' : '0')};
+  transition: 0.1s ease-in-out;
   h3 {
     font-size: 24px;
     font-weight: 800;
@@ -230,7 +228,11 @@ const DetailDiv = styled.li`
     font-weight: ${({ $isDetailOpen }) => ($isDetailOpen ? '700' : '400')};
   }
   div {
-    display: ${({ $isDetailOpen }) => ($isDetailOpen ? 'block' : 'none')};
+    padding: ${({ $isDetailOpen }) => ($isDetailOpen ? '36px 10px 40px' : '0')};
+    visibility: ${({ $isDetailOpen }) => ($isDetailOpen ? 'visible' : 'hidden')};
+    opacity: ${({ $isDetailOpen }) => ($isDetailOpen ? '1' : '0')};
+    transition: 0.1s ease-in-out;
+    height: ${({ $isDetailOpen }) => ($isDetailOpen ? '100%' : '0')};
   }
 `;
 const MapDiv = styled.li`
@@ -239,9 +241,5 @@ const MapDiv = styled.li`
     border: 1px solid ${({ $isMapOpen }) => ($isMapOpen ? '#3282B8' : '#DBE2EF')};
     color: ${({ $isMapOpen }) => ($isMapOpen ? '#3282B8' : '#535353')};
     font-weight: ${({ $isMapOpen }) => ($isMapOpen ? '700' : '400')};
-  }
-
-  div {
-    display: ${({ $isMapOpen }) => ($isMapOpen ? 'block' : 'none')};
   }
 `;

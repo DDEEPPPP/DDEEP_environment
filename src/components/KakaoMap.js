@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useKakaoLoader } from 'react-kakao-maps-sdk';
 const { kakao } = window;
 
-function KakaoMap({ mapx, mapy, mapLevel }) {
+function KakaoMap({ mapx, mapy, mapLevel, mapResize }) {
   const [map, setMap] = useState(null);
   const [mapLoading, mapError] = useKakaoLoader({
     appkey: '0b1bbc3a861f4930bd4ce7fcb1618e0e',
@@ -33,6 +33,7 @@ function KakaoMap({ mapx, mapy, mapLevel }) {
 
     setMap(map);
   }, [mapLoading, mapError, mapx, mapy]);
+
   if (mapLoading) {
     return <div>로딩중</div>;
   }
