@@ -8,6 +8,7 @@ import Row from '../../Row';
 import axios from '../../../api/axios';
 // import axios from 'axios';
 import request from '../../../api/request';
+import Search from '../../Search';
 
 const MainPage = () => {
   //mockData 받아오기 추후 각 컴포넌트 별로 api 받기
@@ -28,6 +29,7 @@ const MainPage = () => {
   return (
     <Container className="App">
       <Header />
+      <Search />
       <Banner />
       <Row title="관광지" id="RM" url={request.fetchAreaBased} data={data} />
       <Row title="팝업스토어" id="PS" url={request.fetchFestivals} data={data} />
