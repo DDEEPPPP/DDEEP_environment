@@ -28,10 +28,9 @@ const MainPage = () => {
 
   return (
     <Container className="App">
-      <Header />
-      <Search />
       <Banner />
-      <Row title="관광지" id="RM" url={request.fetchAreaBased} data={data} />
+      <Row title="관광명소" id="RM" url={request.fetchAreaBased} data={data} />
+      <Row title="문화시설" id="CC" url={request.fetchAreaBased} data={data} />
       <Row title="팝업스토어" id="PS" url={request.fetchFestivals} data={data} />
       <Row title="플리마켓" id="FM" url={request.fetchAreaBased} data={data} />
       <Row title="페스티벌" id="FV" url={request.fetchFestivals} data={data} />

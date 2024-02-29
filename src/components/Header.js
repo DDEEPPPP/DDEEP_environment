@@ -1,20 +1,31 @@
-import React from 'react';
+import { faMagnifyingGlass, faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import Search from './Search';
 
 const Header = () => {
+  const [showSearch, setShowSearch] = useState(false);
+  const handleSearch = () => {
+    setShowSearch((prev) => !prev);
+  };
   return (
     <Container>
       <Inner>
-        <Logo href="/">
-          <img alt="Logo" onClick={() => (window.location.href = '/')} />
-          로고
+        <Logo>
+          <a href="/">
+            <img alt="Logo" />
+          </a>
         </Logo>
         <Nav>
-          <a href="#">관광지</a>
-          <a href="#">행사</a>
-          <a href="#">회원가입</a>
+          <a href="/">회원가입</a>
+          <a href="/">로그인</a>
         </Nav>
+        <SearchBtn onClick={handleSearch}>
+          {!showSearch ? <FontAwesomeIcon icon={faMagnifyingGlass} /> : <FontAwesomeIcon icon={faX} />}
+        </SearchBtn>
       </Inner>
+      <Search showSearch={showSearch} />
     </Container>
   );
 };
@@ -28,24 +39,29 @@ const Container = styled.header`
   right: 0;
   height: 70px;
   width: 100%;
-  border-bottom: 1px solid #d5d5d5;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
   z-index: 3;
-  background-color: #fff;
-  display: flex;
+  background-color: ${({ theme }) => theme.colors.white};
   padding: 0 36px;
   box-sizing: border-box;
+  display: flex;
 `;
 
 const Inner = styled.div`
-  margin: 0 auto;
-  width: 1290px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  flex-grow: 1;
 `;
 
-const Logo = styled.a``;
+const Logo = styled.div`
+  flex-grow: 1;
+  z-index: 5;
+  a {
+    cursor: pointer;
+  }
+`;
 
 const Nav = styled.div`
   display: flex;
@@ -56,5 +72,10 @@ const Nav = styled.div`
   a {
     font-size: 16px;
     line-height: 24px;
+    cursor: pointer;
   }
+`;
+
+const SearchBtn = styled.a`
+  z-index: 5;
 `;

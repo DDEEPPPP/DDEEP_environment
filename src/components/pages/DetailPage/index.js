@@ -17,6 +17,8 @@ const DetailPage = () => {
     listMap: true,
   });
 
+  console.log(contentId);
+
   // 길찾기버튼 온클릭함수
   const clickLoadFind = () => {
     const openWindow = window.open(
@@ -62,8 +64,6 @@ const DetailPage = () => {
   }, [fetchDetailData]);
 
   console.log('Item:', content);
-  console.log('Detail:', upContentState.listDetail);
-  console.log('Map:', upContentState.listMap);
   if (loading) {
     return <div>로딩중</div>;
   }
@@ -133,7 +133,7 @@ const ContentTitleSection = styled.div`
   margin-left: 30px;
   width: 423px;
   padding: 30px 36px;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   background: rgba(0, 0, 0, 0.5);
   height: 300px;
 `;
@@ -156,7 +156,7 @@ const ContentTitleInfo = styled.div`
     font-weight: 600;
     display: block;
     padding-bottom: 10px;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.white};
     line-height: 20px;
   }
 
@@ -195,14 +195,14 @@ const Button = styled.p`
   display: block;
   padding: 8px;
   min-width: 84px;
-  border: 1px solid #fff;
+  border: 1px solid ${({ theme }) => theme.colors.white};
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    color: #000;
-    background: #fff;
+    color: ${({ theme }) => theme.colors.black};
+    background: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -214,7 +214,7 @@ const MapContainer = styled.div`
   h3 {
     font-size: 24px;
     font-weight: 800;
-    color: #1b1b1b;
+    color: ${({ theme }) => theme.colors.black};
     line-height: 24px;
     margin-bottom: 20px;
   }
@@ -222,9 +222,9 @@ const MapContainer = styled.div`
 
 const DetailDiv = styled.li`
   a {
-    background: ${({ $isDetailOpen }) => ($isDetailOpen ? '#BBE1FA' : '#DBE2EF')};
-    border: 1px solid ${({ $isDetailOpen }) => ($isDetailOpen ? '#3282B8' : '#DBE2EF')};
-    color: ${({ $isDetailOpen }) => ($isDetailOpen ? '#3282B8' : '#535353')};
+    background: ${({ $isDetailOpen, theme }) => ($isDetailOpen ? theme.colors.base : theme.colors.gray)};
+    border: 1px solid ${({ $isDetailOpen, theme }) => ($isDetailOpen ? theme.colors.hover : theme.colors.gray)};
+    color: ${({ $isDetailOpen, theme }) => ($isDetailOpen ? theme.colors.hover : theme.colors.gray2)};
     font-weight: ${({ $isDetailOpen }) => ($isDetailOpen ? '700' : '400')};
   }
   div {
@@ -237,9 +237,9 @@ const DetailDiv = styled.li`
 `;
 const MapDiv = styled.li`
   a {
-    background: ${({ $isMapOpen }) => ($isMapOpen ? '#BBE1FA' : '#DBE2EF')};
-    border: 1px solid ${({ $isMapOpen }) => ($isMapOpen ? '#3282B8' : '#DBE2EF')};
-    color: ${({ $isMapOpen }) => ($isMapOpen ? '#3282B8' : '#535353')};
+    background: ${({ $isMapOpen, theme }) => ($isMapOpen ? theme.colors.base : theme.colors.gray)};
+    border: 1px solid ${({ $isMapOpen, theme }) => ($isMapOpen ? theme.colors.hover : theme.colors.gray)};
+    color: ${({ $isMapOpen, theme }) => ($isMapOpen ? theme.colors.hover : theme.colors.gray2)};
     font-weight: ${({ $isMapOpen }) => ($isMapOpen ? '700' : '400')};
   }
 `;
