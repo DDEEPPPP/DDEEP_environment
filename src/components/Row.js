@@ -38,10 +38,22 @@ const Row = ({ title, id, url, data }) => {
     try {
       let response;
       let params = {
-        areaCode: '39',
         numOfRows: '20',
+        areaCode: '39',
       };
-      if (url === '/searchFestival1') {
+      if (id === 'RM') {
+        params = {
+          ...params,
+          contentTypeId: '12',
+        };
+      }
+      if (id === 'CC') {
+        params = {
+          ...params,
+          contentTypeId: '14',
+        };
+      }
+      if (id === 'FV') {
         params = {
           ...params,
           eventStartDate: '19900101',
@@ -50,7 +62,7 @@ const Row = ({ title, id, url, data }) => {
       response = await axios.get(url, { params });
       const datasArray = response?.data?.response?.body?.items?.item || [];
       const shuffleDatas = getRandomArray(datasArray, 5);
-      if (url === '/searchFestival1') {
+      if (id === 'FV') {
         const openState = isOpenCheck(shuffleDatas);
         setDatas(openState);
       } else {
@@ -69,8 +81,7 @@ const Row = ({ title, id, url, data }) => {
     })();
   }, [fetchInfoData]);
 
-  console.log('Data: ', datas);
-
+  console.log('Id:', id, 'Data: ', datas);
   if (loading) {
     return <div>로딩중</div>;
   }
@@ -105,7 +116,7 @@ const Row = ({ title, id, url, data }) => {
 
 export default Row;
 
-const Container = styled.div`
+const Container = styled.section`
   padding: 0 0 26px;
 `;
 
@@ -129,10 +140,6 @@ const Wrap = styled.div`
   margin-right: 2%;
   cursor: pointer;
   transition: all 0.25s;
-
-  div {
-    height: 60%;
-  }
 
   &:hover {
     transform: scale(0.98);
