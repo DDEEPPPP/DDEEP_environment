@@ -1,9 +1,7 @@
-import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
-import request from '../api/request';
 import { useDispatch } from 'react-redux';
 import { setCat1, setKeyword } from '../store/searchParams';
 import { useNavigate } from 'react-router-dom';
@@ -30,11 +28,16 @@ const Search = ({ showSearch }) => {
 
   // 검색 시 전달할 파라미터 redux store에 저장
   const dispatch = useDispatch();
+  const setCategory = () => {
+    dispatch(setCat1(selectedContentType));
+  };
+  const setKeywords = () => {
+    dispatch(setKeyword(searchValue));
+  };
   const goSearchPage = useCallback(
     (event) => {
       event.preventDefault();
-      dispatch(setCat1(selectedContentType));
-      dispatch(setKeyword(searchValue));
+      setCategory();
       navigate('search');
     },
     [dispatch]
