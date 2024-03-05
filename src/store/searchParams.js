@@ -23,8 +23,10 @@ const searchParams = createSlice({
   reducers: {
     setKeyword: setKeywordReducer,
     setCat1: setCat1Reducer,
+
   },
 });
 
 export const { setKeyword, setCat1 } = searchParams.actions;
 export default searchParams;
+
