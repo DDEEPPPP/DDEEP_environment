@@ -8,6 +8,8 @@ import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
 import JoinPage from './pages/JoinPage';
 import { Reset } from 'styled-reset';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 const LayOut = () => {
   return (
@@ -21,19 +23,21 @@ const LayOut = () => {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <Reset />
-        <Routes>
-          <Route path="/" element={<LayOut />}>
-            <Route index element={<MainPage />} />
-            <Route path="join" element={<JoinPage />} />
-            <Route path=":contentType/:contentId" element={<DetailPage />} />
-            <Route path="search" element={<SearchPage />} />
-          </Route>
-        </Routes>
-      </div>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <Reset />
+          <Routes>
+            <Route path="/" element={<LayOut />}>
+              <Route index element={<MainPage />} />
+              <Route path="join" element={<JoinPage />} />
+              <Route path=":contentType/:contentId" element={<DetailPage />} />
+              <Route path="search" element={<SearchPage />} />
+            </Route>
+          </Routes>
+        </div>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

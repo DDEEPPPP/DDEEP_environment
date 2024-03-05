@@ -1,17 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const searchParams = createSlice({
-  name: 'searchParmas',
+
+  name: 'searchParams',
   initialState: {
-    url: '',
+
     params: {
       keyword: '',
       cat1: '',
     },
     reducers: {
-      setUrl: (state, action) => {
-        state.url = action.payload;
-      },
+
       setKeyword: (state, action) => {
         state.params.keyword = action.payload;
       },
@@ -22,5 +21,6 @@ export const searchParams = createSlice({
   },
 });
 
-export const { setUrl, setKeyword, setCat1 } = setSearchParams.action;
-export default setSearchParams.reducer;
+export const { setKeyword, setCat1 } = searchParams.actions;
+export default searchParams;
+

@@ -1,7 +1,8 @@
 import React from 'react';
 
 function SearchTab() {
-  return <div>SearchTab</div>;
+  return <div></div>;
+
 }
 
 export default SearchTab;

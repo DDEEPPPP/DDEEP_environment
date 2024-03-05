@@ -81,7 +81,6 @@ const Row = ({ title, id, url, data }) => {
     })();
   }, [fetchInfoData]);
 
-  console.log('Id:', id, 'Data: ', datas);
   if (loading) {
     return <div>로딩중</div>;
   }
@@ -97,16 +96,23 @@ const Row = ({ title, id, url, data }) => {
           <Wrap key={data.contentid}>
             <div onClick={() => navigate(`${url}/${data.contentid}`)}>
               <Image>
-                <img src={data.firstimage} />
+                {data.firstimage ? (
+                  <img src={data.firstimage} />
+                ) : (
+                  <img src={process.env.PUBLIC_URL + '/Noimage.jpg'} />
+                )}
+
                 {url === '/searchFestival1' && (
                   <State $isState={data.isOpen}>{data.isOpen ? '진행중' : '진행 완료'}</State>
                 )}
               </Image>
               <Text>
                 <h3>{data.title}</h3>
-                <span>
-                  {data.eventstartdate} ~ {data.eventenddate}
-                </span>
+                {url === '/searchFestival1' && (
+                  <span>
+                    {data.eventstartdate} ~ {data.eventenddate}
+                  </span>
+                )}
                 <span>{data.addr1}</span>
               </Text>
             </div>

@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import setSearchParamsReducer from './searchParams';
+
+import searchParams from './searchParams';
 
 export default configureStore({
   reducer: {
-    searchParmas: setSearchParamsReducer,
+    searchParams: searchParams.reducer,
   },
 });
