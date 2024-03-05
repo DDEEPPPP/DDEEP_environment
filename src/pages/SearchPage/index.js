@@ -1,5 +1,6 @@
-import axios from '../../../api/axios';
+import axios from '../../api/axios';
 import React, { useCallback, useEffect, useState } from 'react';
+import SearchTab from '../../components/SearchTab';
 
 const SearchPage = () => {
   const [data, setData] = useState([]);
@@ -25,7 +26,14 @@ const SearchPage = () => {
     })();
   }, []);
   console.log(data);
-  return <div>SearchPage</div>;
+  return (
+    <div>
+      <SearchTab />
+      <SearchTab />
+      <SearchTab />
+      <SearchTab />
+    </div>
+  );
 };
 
 export default SearchPage;

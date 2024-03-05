@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from '../../../api/axios';
-import request from '../../../api/request';
-import KakaoMap from '../../KakaoMap';
+import axios from '../../api/axios';
+import request from '../../api/request';
+import KakaoMap from '../../components/KakaoMap';
 
 const DetailPage = () => {
   const [content, setContent] = useState({});

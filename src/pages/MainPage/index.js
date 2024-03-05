@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getFestival } from '../../../api/testapi/get/getFestival';
-import Banner from '../../Banner';
-import Header from '../../Header';
-import Row from '../../Row';
+import { getFestival } from '../../api/testapi/get/getFestival';
+import Banner from '../../components/Banner';
+import Row from '../../components/Row';
 
-import axios from '../../../api/axios';
+import axios from '../../api/axios';
 // import axios from 'axios';
-import request from '../../../api/request';
-import Search from '../../Search';
+import request from '../../api/request';
 
 const MainPage = () => {
   //mockData 받아오기 추후 각 컴포넌트 별로 api 받기
