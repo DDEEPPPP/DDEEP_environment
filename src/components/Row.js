@@ -81,29 +81,38 @@ const Row = ({ title, id, url, data }) => {
     })();
   }, [fetchInfoData]);
 
-  console.log('Id:', id, 'Data: ', datas);
   if (loading) {
     return <div>로딩중</div>;
   }
   return (
     <Container>
-      <h2>{title}</h2>
+      <RowHeader>
+        <h2>{title}</h2>
+        <a>전체보기</a>
+      </RowHeader>
       <Content id={id}>
         {/* map돌리기 */}
         {datas.map((data) => (
           <Wrap key={data.contentid}>
             <div onClick={() => navigate(`${url}/${data.contentid}`)}>
               <Image>
-                <img src={data.firstimage} />
+                {data.firstimage ? (
+                  <img src={data.firstimage} />
+                ) : (
+                  <img src={process.env.PUBLIC_URL + '/Noimage.jpg'} />
+                )}
+
                 {url === '/searchFestival1' && (
                   <State $isState={data.isOpen}>{data.isOpen ? '진행중' : '진행 완료'}</State>
                 )}
               </Image>
               <Text>
                 <h3>{data.title}</h3>
-                <span>
-                  {data.eventstartdate} ~ {data.eventenddate}
-                </span>
+                {url === '/searchFestival1' && (
+                  <span>
+                    {data.eventstartdate} ~ {data.eventenddate}
+                  </span>
+                )}
                 <span>{data.addr1}</span>
               </Text>
             </div>
@@ -118,6 +127,16 @@ export default Row;
 
 const Container = styled.section`
   padding: 0 0 26px;
+  margin-top: 10px;
+`;
+
+const RowHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    cursor: pointer;
+  }
 `;
 
 const Content = styled.div`

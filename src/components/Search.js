@@ -4,12 +4,21 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 import request from '../api/request';
+import { useDispatch } from 'react-redux';
+import { setCat1, setKeyword } from '../store/searchParams';
+import { useNavigate } from 'react-router-dom';
 
 const Search = ({ showSearch }) => {
+  const navigate = useNavigate();
   // radio 선택시 전달할 파라미터 변경
   const [selectedContentType, setSelectedContentType] = useState('');
   const handleContentType = (event) => {
     setSelectedContentType(event.target.value);
+  };
+  // 한번 더 클릭시 체크 해제
+  const checkOutRadio = (event) => {
+    const clickedValue = event.target.value;
+    setSelectedContentType((prev) => (prev === clickedValue ? '' : clickedValue));
   };
 
   // 검색어 입력 확인 , url인코딩
@@ -18,34 +27,65 @@ const Search = ({ showSearch }) => {
     const encoded = encodeURIComponent(event.target.value);
     setSearchValue(encoded);
   };
-  console.log(selectedContentType);
+
+  // 검색 시 전달할 파라미터 redux store에 저장
+  const dispatch = useDispatch();
+  const goSearchPage = useCallback(
+    (event) => {
+      event.preventDefault();
+      dispatch(setCat1(selectedContentType));
+      dispatch(setKeyword(searchValue));
+      navigate('search');
+    },
+    [dispatch]
+  );
 
   return (
     <SearchSection $showSearch={showSearch}>
       <div>
-        <SearchForm>
-          <SearchInput placeholder="검색어를 입력하세요." type="text" value={searchValue} onChange={handleSearch} />
+        <SearchForm onSubmit={goSearchPage}>
+          <SearchInput placeholder="검색어를 입력하세요." type="text" onChange={handleSearch} />
           <SearchIcon>
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <FontAwesomeIcon icon={faMagnifyingGlass} type="submit" onClick={goSearchPage} />
           </SearchIcon>
         </SearchForm>
         <SelectForm>
-          <label>
-            <input type="radio" value="A01" checked={selectedContentType === 'A01'} onChange={handleContentType} />
-            자연
-          </label>
-          <label>
-            <input type="radio" value="A02" checked={selectedContentType === 'A02'} onChange={handleContentType} />
-            인문(문화/예술/역사)
-          </label>
-          <label>
-            <input type="radio" value="A03" checked={selectedContentType === 'A03'} onChange={handleContentType} />
-            레포츠
-          </label>
-          <label>
-            <input type="radio" value="A04" checked={selectedContentType === 'A04'} onChange={handleContentType} />
-            쇼핑
-          </label>
+          <input
+            type="radio"
+            value="A01"
+            id="A01"
+            checked={selectedContentType === 'A01'}
+            onChange={handleContentType}
+            onClick={checkOutRadio}
+          />
+          <label htmlFor="A01">자연</label>
+          <input
+            type="radio"
+            value="A02"
+            id="A02"
+            checked={selectedContentType === 'A02'}
+            onChange={handleContentType}
+            onClick={checkOutRadio}
+          />
+          <label htmlFor="A02">인문(문화/예술/역사)</label>
+          <input
+            type="radio"
+            value="A03"
+            id="A03"
+            checked={selectedContentType === 'A03'}
+            onChange={handleContentType}
+            onClick={checkOutRadio}
+          />
+          <label htmlFor="A03">레포츠</label>
+          <input
+            type="radio"
+            value="A04"
+            id="A04"
+            checked={selectedContentType === 'A04'}
+            onChange={handleContentType}
+            onClick={checkOutRadio}
+          />
+          <label htmlFor="A04">쇼핑</label>
         </SelectForm>
       </div>
     </SearchSection>
@@ -140,9 +180,15 @@ const SelectForm = styled.form`
     display: inline-block;
     cursor: pointer;
     margin-right: 10px;
+    box-sizing: border-box;
+    &:hover {
+      color: ${({ theme }) => theme.colors.hover};
+      border-color: ${({ theme }) => theme.colors.hover};
+      background-color: ${({ theme }) => theme.colors.base};
+      font-weight: 600;
+    }
   }
-
-  label:hover {
+  input[type='radio']:checked + label {
     color: ${({ theme }) => theme.colors.hover};
     border-color: ${({ theme }) => theme.colors.hover};
     background-color: ${({ theme }) => theme.colors.base};
