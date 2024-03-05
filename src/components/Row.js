@@ -87,7 +87,10 @@ const Row = ({ title, id, url, data }) => {
   }
   return (
     <Container>
-      <h2>{title}</h2>
+      <RowHeader>
+        <h2>{title}</h2>
+        <a>전체보기</a>
+      </RowHeader>
       <Content id={id}>
         {/* map돌리기 */}
         {datas.map((data) => (
@@ -118,6 +121,16 @@ export default Row;
 
 const Container = styled.section`
   padding: 0 0 26px;
+  margin-top: 10px;
+`;
+
+const RowHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    cursor: pointer;
+  }
 `;
 
 const Content = styled.div`
