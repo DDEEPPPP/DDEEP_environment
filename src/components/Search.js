@@ -6,8 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setCat1, setKeyword } from '../store/searchParams';
 import { useNavigate } from 'react-router-dom';
 
-const Search = ({ showSearch }) => {
-  const navigate = useNavigate();
+const Search = ({ showSearch, goToSearchPage }) => {
   // radio 선택시 전달할 파라미터 변경
   const [selectedContentType, setSelectedContentType] = useState('');
   const handleContentType = (event) => {
@@ -38,7 +37,7 @@ const Search = ({ showSearch }) => {
     (event) => {
       event.preventDefault();
       setCategory();
-      navigate('search');
+      goToSearchPage();
     },
     [dispatch]
   );
@@ -61,7 +60,7 @@ const Search = ({ showSearch }) => {
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A01">자연</label>
+          <label htmlFor="A01">#자연</label>
           <input
             type="radio"
             value="A02"
@@ -70,7 +69,7 @@ const Search = ({ showSearch }) => {
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A02">인문(문화/예술/역사)</label>
+          <label htmlFor="A02">#인문(문화/예술/역사)</label>
           <input
             type="radio"
             value="A03"
@@ -79,7 +78,7 @@ const Search = ({ showSearch }) => {
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A03">레포츠</label>
+          <label htmlFor="A03">#레포츠</label>
           <input
             type="radio"
             value="A04"
@@ -88,7 +87,7 @@ const Search = ({ showSearch }) => {
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A04">쇼핑</label>
+          <label htmlFor="A04">#쇼핑</label>
         </SelectForm>
       </div>
     </SearchSection>
