@@ -1,13 +1,19 @@
 import { faMagnifyingGlass, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from './Search';
 
 const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
+  const navigate = useNavigate();
   const handleSearch = () => {
     setShowSearch((prev) => !prev);
+  };
+  const goToSearchPage = () => {
+    setShowSearch(false);
+    navigate('/search');
   };
   return (
     <Container>
@@ -25,7 +31,7 @@ const Header = () => {
           {!showSearch ? <FontAwesomeIcon icon={faMagnifyingGlass} /> : <FontAwesomeIcon icon={faX} />}
         </SearchBtn>
       </Inner>
-      <Search showSearch={showSearch} />
+      <Search showSearch={showSearch} goToSearchPage={goToSearchPage} />
     </Container>
   );
 };

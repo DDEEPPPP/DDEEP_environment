@@ -1,37 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { getFestival } from '../../api/testapi/get/getFestival';
+
 import Banner from '../../components/Banner';
 import Row from '../../components/Row';
 
-import axios from '../../api/axios';
-// import axios from 'axios';
 import request from '../../api/request';
 
 const MainPage = () => {
-  //mockData 받아오기 추후 각 컴포넌트 별로 api 받기
-  const [data, setData] = useState([]);
-  const [mockData, setMockData] = useState([]);
-  useEffect(() => {
-    const fetchMockData = async () => {
-      try {
-        const response = await getFestival();
-        setData(response);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchMockData();
-  }, []);
-
   return (
     <Container className="App">
-      <Banner />
-      <Row title="관광명소" id="RM" url={request.fetchAreaBased} data={data} />
-      <Row title="문화시설" id="CC" url={request.fetchAreaBased} data={data} />
-      <Row title="팝업스토어" id="PS" url={request.fetchFestivals} data={data} />
-      <Row title="플리마켓" id="FM" url={request.fetchAreaBased} data={data} />
-      <Row title="페스티벌" id="FV" url={request.fetchFestivals} data={data} />
+      <Banner url={request.fetchFestivals} />
+      <Row title="관광명소" id="RM" url={request.fetchAreaBased} />
+      <Row title="문화시설" id="CC" url={request.fetchAreaBased} />
+      <Row title="팝업스토어" id="PS" url={request.fetchFestivals} />
+      <Row title="플리마켓" id="FM" url={request.fetchAreaBased} />
+      <Row title="페스티벌" id="FV" url={request.fetchFestivals} />
     </Container>
   );
 };

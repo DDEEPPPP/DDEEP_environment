@@ -2,25 +2,63 @@ import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from '../api/axios';
-import { getFestival } from '../api/testapi/get/getFestival';
 
-const Banner = () => {
+const Banner = ({ url }) => {
   const [festivals, setFestivals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isHover, setIsHover] = useState(0);
 
+  // 현재 진행중인지 확인
+  const isOpenCheck = (array) => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const date = `${year}${month}${day}`;
+    const eventState = array.map((data) => {
+      const isOpen = date >= data.eventstartdate && date <= data.eventenddate;
+      const openDate = `${data.eventstartdate.slice(0, 4)}년 ${data.eventstartdate.slice(
+        4,
+        6
+      )}월 ${data.eventstartdate.slice(6, 8)}일`;
+      let closeDate;
+      if (data.eventenddate) {
+        closeDate = `${data.eventenddate.slice(0, 4)}년 ${data.eventenddate.slice(4, 6)}월 ${data.eventenddate.slice(
+          6,
+          8
+        )}일`;
+      }
+      return {
+        ...data,
+        isOpen,
+        openDate,
+        closeDate,
+      };
+    });
+    return eventState;
+  };
+  // 현재 진행중인 축제를 배너에 띄우기
   useEffect(() => {
     const fetchFestivalData = async () => {
       try {
-        const response = await getFestival();
-        setFestivals(response.filter((festivals) => festivals.state === '개최중'));
+        let response;
+        let params = {
+          numOfRows: '9999',
+          areaCode: '39',
+          eventStartDate: '19900101',
+        };
+        response = await axios.get(url, { params });
+        const festivalsArray = response?.data?.response?.body?.items?.item || [];
+        const openState = isOpenCheck(festivalsArray);
+        const openFestivals = openState.filter((data) => data.isOpen === true);
+        setFestivals(openFestivals);
         setLoading(false);
       } catch (err) {
         console.error(err);
       }
     };
     fetchFestivalData();
-  }, []);
+  }, [url]);
 
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -52,15 +90,26 @@ const Banner = () => {
                 onMouseOver={() => onMouseOver(index)}
                 className={isHover === index ? 'active' : ''}
               >
-                <a href="#" style={{ backgroundImage: `url(${festival.image})` }}>
+                <a
+                  href={`${url}/${festival.contentid}`}
+                  style={{
+                    backgroundImage: festival.firstimage
+                      ? `url(${festival.firstimage})`
+                      : `url(${process.env.PUBLIC_URL}/Noimage.jpg)`,
+                  }}
+                >
                   <div className="text-area">
                     <div>
-                      <span className="state">{festival.state}</span>
+                      <State $isState={festival.isOpen} $closeDate={festival.closeDate}>
+                        {festival.isOpen || !festival.closeDate ? '진행중' : '진행 완료'}
+                      </State>
                       <strong>{festival.title}</strong>
                     </div>
                     <div className="text-desc">
-                      <span>{festival.date}</span>
-                      <span>{festival.place}</span>
+                      <span>
+                        {festival.openDate} ~ {festival.closeDate ? festival.closeDate : '상시 진행중'}
+                      </span>
+                      <span>{festival.addr1}</span>
                       <span></span>
                     </div>
                   </div>
@@ -78,7 +127,7 @@ export default Banner;
 
 const Wrap = styled.section`
   max-width: 928px;
-  margin: 0 auto;
+  margin: 0 auto 30px;
   box-sizing: border-box;
 `;
 
@@ -100,6 +149,7 @@ const Slide = styled.li`
   transition: all 0.1s;
 
   a {
+    cursor: pointer;
     overflow: hidden;
     display: block;
     border-radius: 8px;
@@ -108,15 +158,6 @@ const Slide = styled.li`
     height: 100%;
     color: #fff;
     text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.6);
-  }
-  span.state {
-    padding: 5px 8px;
-    border-radius: 4px;
-    background-color: rgb(0, 204, 51);
-    font-size: 12px;
-    font-weight: 800;
-    line-height: 24px;
-    text-shadow: none;
   }
 
   div.text-area {
@@ -167,4 +208,16 @@ const Slide = styled.li`
     clear: both;
     display: block;
   }
+`;
+
+const State = styled.span`
+  color: ${({ theme }) => theme.colors.white};
+  padding: 5px 8px;
+  border-radius: 4px;
+  background-color: ${({ $isState, $closeDate, theme }) =>
+    $isState || !$closeDate ? theme.colors.green : theme.colors.red};
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 24px;
+  text-shadow: none;
 `;
