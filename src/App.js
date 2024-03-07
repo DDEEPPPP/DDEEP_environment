@@ -7,6 +7,7 @@ import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
 import JoinPage from './pages/JoinPage';
+import ListPage from './pages/ListPage';
 import { Reset } from 'styled-reset';
 import { Provider } from 'react-redux';
 import store from './store/store';
@@ -33,6 +34,7 @@ function App() {
               <Route path="join" element={<JoinPage />} />
               <Route path=":contentType/:contentId" element={<DetailPage />} />
               <Route path="search" element={<SearchPage />} />
+              <Route path="list/:contentType/:typeId/:pageNo" element={<ListPage />} />
             </Route>
           </Routes>
         </div>

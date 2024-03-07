@@ -8,6 +8,15 @@ const Banner = ({ url }) => {
   const [loading, setLoading] = useState(true);
   const [isHover, setIsHover] = useState(0);
 
+  // 가져온 데이터 배열 랜덤으로  섞기
+  const getRandomArray = (array, num) => {
+    if (array.length <= num) {
+      return array.slice();
+    }
+    const shuffleArray = array.slice().sort(() => 0.5 - Math.random());
+    return shuffleArray.slice(0, num);
+  };
+
   // 현재 진행중인지 확인
   const isOpenCheck = (array) => {
     const currentDate = new Date();
@@ -51,7 +60,8 @@ const Banner = ({ url }) => {
         const festivalsArray = response?.data?.response?.body?.items?.item || [];
         const openState = isOpenCheck(festivalsArray);
         const openFestivals = openState.filter((data) => data.isOpen === true);
-        setFestivals(openFestivals);
+        const shuffleFestivals = getRandomArray(openFestivals, 3);
+        setFestivals(shuffleFestivals);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -59,19 +69,6 @@ const Banner = ({ url }) => {
     };
     fetchFestivalData();
   }, [url]);
-
-  const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  };
-
-  if (festivals.length > 3) {
-    const shuffledFestivals = [...festivals];
-    shuffle(shuffledFestivals);
-    setFestivals(festivals.slice(0, 3));
-  }
 
   const onMouseOver = (index) => {
     setIsHover(index);
@@ -86,7 +83,7 @@ const Banner = ({ url }) => {
           {festivals.map((festival, index) => {
             return (
               <Slide
-                key={festival.id}
+                key={festival.contentid}
                 onMouseOver={() => onMouseOver(index)}
                 className={isHover === index ? 'active' : ''}
               >
@@ -127,7 +124,7 @@ export default Banner;
 
 const Wrap = styled.section`
   max-width: 928px;
-  margin: 0 auto 30px;
+  margin: 10px auto 30px;
   box-sizing: border-box;
 `;
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from '../../api/axios';
 import request from '../../api/request';
@@ -8,16 +8,11 @@ import KakaoMap from '../../components/KakaoMap';
 const DetailPage = () => {
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const url = location.pathname.split('/');
-  const contentType = url[1];
-  const contentId = url[2];
+  const { contentType, contentId } = useParams();
   const [upContentState, setUpContentState] = useState({
     listDetail: false,
     listMap: true,
   });
-
-  console.log(contentId);
 
   // 길찾기버튼 온클릭함수
   const clickLoadFind = () => {
@@ -63,14 +58,19 @@ const DetailPage = () => {
     })();
   }, [fetchDetailData]);
 
-  console.log('Item:', content);
   if (loading) {
     return <div>로딩중</div>;
   }
 
   return (
     <Wrap>
-      <ContentHeader style={{ background: `url(${content.firstimage}) 50% 50% / cover no-repeat` }}>
+      <ContentHeader
+        style={{
+          background: content.firstimage
+            ? `url(${content.firstimage}) 50% 50% / cover no-repeat`
+            : `url(${process.env.PUBLIC_URL}/Noimage.jpg) 50% 50% / cover no-repeat`,
+        }}
+      >
         <ContentTitleSection>
           <Title>
             <h2>{content.title}</h2>
