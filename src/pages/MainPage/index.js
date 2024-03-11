@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import Banner from '../../components/Banner';
 import Row from '../../components/Row';
-
 import request from '../../api/request';
 
 const MainPage = () => {

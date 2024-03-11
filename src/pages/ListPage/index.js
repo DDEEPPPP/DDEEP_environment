@@ -5,10 +5,12 @@ import styled from 'styled-components';
 import request from '../../api/request';
 import Card from '../../components/Card';
 import PageSelect from '../../components/PageSelect';
-import { type } from '@testing-library/user-event/dist/type';
+
+import LoadingBar from '../../components/Loading';
 
 function ListPage() {
   const [listDatas, setListDatas] = useState([]);
+  const [loading, setLoading] = useState(false);
   // totalPage 계산
   const [totalPage, setTotalPage] = useState('');
 
@@ -47,6 +49,7 @@ function ListPage() {
 
   //가져온 fetchType, typeId 에 따라 API호출
   const fetchList = useCallback(async () => {
+    setLoading(false);
     try {
       let response;
       let params = {
@@ -87,6 +90,7 @@ function ListPage() {
         //totalPage 계산해서 할당
         setTotalPage(Math.ceil(datasArray.length / 10));
       }
+      setLoading(true);
     } catch (error) {
       console.log(error);
     }
@@ -111,6 +115,9 @@ function ListPage() {
       setListDatas((prev) => sliceListDatas(prev, pageNo, 10));
     })();
   }, [fetchList]);
+  useEffect(() => {
+    setListDatas((prev) => sliceListDatas(prev, pageNo, 10));
+  }, [pageNo]);
   return (
     <Wrap>
       <SideMenu>
@@ -132,17 +139,19 @@ function ListPage() {
           </MenuTitle>
         </ul>
       </SideMenu>
-      {listDatas.length !== 0 ? (
-        <MainContainer>
-          <FilterSection></FilterSection>
-          {listDatas.map((data) => (
-            <Card url={`/${contentType}`} data={data} key={data.contentid} />
-          ))}
-          <PageSelect onPageChange={onPageChange} currentPage={parseInt(pageNo)} totalPages={totalPage} />
-        </MainContainer>
-      ) : (
-        <NoResult>결과가 없어용</NoResult>
-      )}
+      <MainContainer>
+        <FilterSection></FilterSection>
+        {loading ? (
+          <>
+            {listDatas.map((data) => (
+              <Card url={`/${contentType}`} data={data} key={data.contentid} />
+            ))}
+            <PageSelect onPageChange={onPageChange} currentPage={parseInt(pageNo)} totalPages={totalPage} />
+          </>
+        ) : (
+          <LoadingBar marginTop="150px" />
+        )}
+      </MainContainer>
     </Wrap>
   );
 }
