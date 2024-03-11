@@ -2,10 +2,11 @@ import axios from '../api/axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
+import LoadingBar from './Loading';
 
 const Row = ({ title, id, url }) => {
   const [datas, setDatas] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // 가져온 데이터 배열 랜덤으로  섞기
   const getRandomArray = (array, num) => {
@@ -86,7 +87,7 @@ const Row = ({ title, id, url }) => {
         setDatas(shuffleDatas);
       }
 
-      setLoading(false);
+      setLoading(true);
     } catch (error) {
       console.log(error);
     }
@@ -98,9 +99,6 @@ const Row = ({ title, id, url }) => {
     })();
   }, [fetchInfoData]);
 
-  if (loading) {
-    return <div>로딩중</div>;
-  }
   return (
     <Container>
       <RowHeader>
@@ -109,9 +107,11 @@ const Row = ({ title, id, url }) => {
       </RowHeader>
       <Content id={id}>
         {/* map돌리기 */}
-        {datas.map((data) => (
-          <Card url={url} data={data} key={data.contentid} />
-        ))}
+        {loading ? (
+          datas.map((data) => <Card url={url} data={data} key={data.contentid} />)
+        ) : (
+          <LoadingBar size="100px" />
+        )}
       </Content>
     </Container>
   );

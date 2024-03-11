@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Card({ url, data }) {
   const navigate = useNavigate();
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const handleImageLoad = () => {
+    setImgLoaded(true);
+  };
   return (
     <Wrap key={data.contentid}>
       <div onClick={() => navigate(`${url}/${data.contentid}`)}>
@@ -13,7 +17,12 @@ function Card({ url, data }) {
           <span></span>
           <span></span>
           {data.firstimage ? (
-            <img src={data.firstimage} alt="장소 이미지" />
+            <img
+              src={data.firstimage}
+              alt="장소 이미지"
+              onLoad={handleImageLoad}
+              style={{ display: imgLoaded ? 'inline-block' : 'none' }}
+            />
           ) : (
             <img src={process.env.PUBLIC_URL + '/Noimage.jpg'} alt="대체 이미지" />
           )}

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from '../api/axios';
+import LoadingBar from './Loading';
 
 const Banner = ({ url }) => {
   const [festivals, setFestivals] = useState([]);
@@ -77,7 +78,7 @@ const Banner = ({ url }) => {
   return (
     <Wrap>
       {loading ? (
-        <p>로딩중</p>
+        <LoadingBar />
       ) : (
         <Slides>
           {festivals.map((festival, index) => {

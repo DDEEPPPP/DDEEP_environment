@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import axios from '../../api/axios';
 import request from '../../api/request';
 import KakaoMap from '../../components/KakaoMap';
+import LoadingBar from '../../components/Loading';
 
 const DetailPage = () => {
   const [content, setContent] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { contentType, contentId } = useParams();
   const [upContentState, setUpContentState] = useState({
     listDetail: false,
@@ -46,7 +47,7 @@ const DetailPage = () => {
       const response = await axios.get(request.fetchDetailInfo, { params });
       const item = response?.data?.response?.body?.items?.item[0] || {};
       setContent(item);
-      setLoading(false);
+      setLoading(true);
     } catch (error) {
       console.log(error);
     }
@@ -58,62 +59,64 @@ const DetailPage = () => {
     })();
   }, [fetchDetailData]);
 
-  if (loading) {
-    return <div>로딩중</div>;
-  }
-
   return (
     <Wrap>
-      <ContentHeader
-        style={{
-          background: content.firstimage
-            ? `url(${content.firstimage}) 50% 50% / cover no-repeat`
-            : `url(${process.env.PUBLIC_URL}/Noimage.jpg) 50% 50% / cover no-repeat`,
-        }}
-      >
-        <ContentTitleSection>
-          <Title>
-            <h2>{content.title}</h2>
-          </Title>
-          <ContentTitleInfo>
-            <h3>info</h3>
-            <div>
-              <p>주소</p>
-              <p>
-                {content.addr1}
-                &nbsp;
-                {content.addr2}
-              </p>
-            </div>
-            <div>
-              <p>연락처</p>
-              {content.tel ? <p>{content.tel}</p> : <p>없음</p>}
-            </div>
-            <div>
-              <Button onClick={clickLoadFind}>길찾기</Button>
-            </div>
-          </ContentTitleInfo>
-        </ContentTitleSection>
-      </ContentHeader>
-      <ContentMain>
-        <ul>
-          <DetailDiv $isDetailOpen={upContentState.listDetail}>
-            <h2>
-              <a onClick={() => upContentSection('listDetail')}>상세정보</a>
-            </h2>
-            <div id="listDetail">상세정보 탭 오픈</div>
-          </DetailDiv>
-          <MapDiv $isMapOpen={upContentState.listMap}>
-            <h2>
-              <a onClick={() => upContentSection('listMap')}>지도</a>
-            </h2>
-            <MapContainer id="listMap" $isMapOpen={upContentState.listMap}>
-              <h3>{content.title}</h3>
-              <KakaoMap mapx={content.mapx} mapy={content.mapy} mapLevel={content.mlevel} />
-            </MapContainer>
-          </MapDiv>
-        </ul>
-      </ContentMain>
+      {loading ? (
+        <>
+          <ContentHeader
+            style={{
+              background: content.firstimage
+                ? `url(${content.firstimage}) 50% 50% / cover no-repeat`
+                : `url(${process.env.PUBLIC_URL}/Noimage.jpg) 50% 50% / cover no-repeat`,
+            }}
+          >
+            <ContentTitleSection>
+              <Title>
+                <h2>{content.title}</h2>
+              </Title>
+              <ContentTitleInfo>
+                <h3>info</h3>
+                <div>
+                  <p>주소</p>
+                  <p>
+                    {content.addr1}
+                    &nbsp;
+                    {content.addr2}
+                  </p>
+                </div>
+                <div>
+                  <p>연락처</p>
+                  {content.tel ? <p>{content.tel}</p> : <p>없음</p>}
+                </div>
+                <div>
+                  <Button onClick={clickLoadFind}>길찾기</Button>
+                </div>
+              </ContentTitleInfo>
+            </ContentTitleSection>
+          </ContentHeader>
+          <ContentMain>
+            <ul>
+              <DetailDiv $isDetailOpen={upContentState.listDetail}>
+                <h2>
+                  <a onClick={() => upContentSection('listDetail')}>상세정보</a>
+                </h2>
+                <div id="listDetail">상세정보 탭 오픈</div>
+              </DetailDiv>
+              <MapDiv $isMapOpen={upContentState.listMap}>
+                <h2>
+                  <a onClick={() => upContentSection('listMap')}>지도</a>
+                </h2>
+                <MapContainer id="listMap" $isMapOpen={upContentState.listMap}>
+                  <h3>{content.title}</h3>
+                  <KakaoMap mapx={content.mapx} mapy={content.mapy} mapLevel={content.mlevel} />
+                </MapContainer>
+              </MapDiv>
+            </ul>
+          </ContentMain>
+        </>
+      ) : (
+        <LoadingBar marginTop="150px" />
+      )}
     </Wrap>
   );
 };
