@@ -7,8 +7,17 @@ import Card from '../../components/Card';
 import PageSelect from '../../components/PageSelect';
 
 import LoadingBar from '../../components/Loading';
+import Filter from '../../components/Filter';
+import { faArrowDownShortWide, faArrowUpShortWide } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function ListPage() {
+  // Filter 컴포넌트 on/off
+  const [showFilter, setShowFilter] = useState(false);
+  const handleFilter = () => {
+    setShowFilter((prev) => !prev);
+  };
+
   const [listDatas, setListDatas] = useState([]);
   const [loading, setLoading] = useState(false);
   // totalPage 계산
@@ -140,12 +149,23 @@ function ListPage() {
         </ul>
       </SideMenu>
       <MainContainer>
-        <FilterSection></FilterSection>
         {loading ? (
           <>
-            {listDatas.map((data) => (
-              <Card url={`/${contentType}`} data={data} key={data.contentid} />
-            ))}
+            <FilterContainer>
+              <FilterBtn onClick={handleFilter}>
+                {showFilter ? (
+                  <FontAwesomeIcon icon={faArrowDownShortWide} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowUpShortWide} />
+                )}
+              </FilterBtn>
+              <Filter showFilter={showFilter} />
+            </FilterContainer>
+            <CardSection>
+              {listDatas.map((data) => (
+                <Card url={`/${contentType}`} data={data} key={data.contentid} />
+              ))}
+            </CardSection>
             <PageSelect onPageChange={onPageChange} currentPage={parseInt(pageNo)} totalPages={totalPage} />
           </>
         ) : (
@@ -163,7 +183,7 @@ const Wrap = styled.section`
   display: flex;
 `;
 const SideMenu = styled.div`
-  width: 15%;
+  width: 10%;
   border-right: 1px solid ${({ theme }) => theme.colors.gray};
   padding: 15px 10px 0;
   background: ${({ theme }) => theme.colors.white};
@@ -197,10 +217,29 @@ const MenuTitle = styled.a`
 `;
 const MainContainer = styled.div`
   padding: 20px;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
 `;
-const FilterSection = styled.div``;
 
-const NoResult = styled.div`
-  width: 100%;
+const FilterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const FilterBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
+const CardSection = styled.div`
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
 `;

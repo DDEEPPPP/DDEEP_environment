@@ -143,8 +143,7 @@ const RowHeader = styled.div`
 const Content = styled.div`
   display: flex;
   padding: 20px 0;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 40px;
   /* background: ${({ theme }) => theme.colors.base}; */
 `;

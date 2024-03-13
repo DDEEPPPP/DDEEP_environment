@@ -4,7 +4,7 @@ import styled from 'styled-components';
 function LoadingBar({ size, marginTop }) {
   return (
     <Wrap $marginTop={marginTop}>
-      <Loading $size={size}></Loading>;
+      <Loading $size={size}></Loading>
     </Wrap>
   );
 }

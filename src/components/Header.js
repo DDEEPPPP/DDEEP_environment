@@ -20,7 +20,7 @@ const Header = () => {
       <Inner>
         <Logo>
           <a href="/">
-            <img alt="Logo" />
+            <img alt="Logo" src={process.env.PUBLIC_URL + '/logo192.png'} />
           </a>
         </Logo>
         <Nav>
@@ -66,6 +66,14 @@ const Logo = styled.div`
   z-index: 5;
   a {
     cursor: pointer;
+  }
+  img {
+    width: 60px;
+    transition: all 0.5s;
+  }
+
+  img:hover {
+    transform: scale(1.2);
   }
 `;
 
