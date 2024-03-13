@@ -103,7 +103,7 @@ const SearchSection = styled.div`
   width: 100%;
   transition: 0.4s;
   padding: 130px 0 130px;
-  background-color: ${({ theme }) => theme.colors.basedGray};
+  background-color: ${({ theme }) => theme.colors.white};
   z-index: 4;
   div {
     max-width: 768px;
