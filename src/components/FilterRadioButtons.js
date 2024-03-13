@@ -8,12 +8,12 @@ function FilterRadioButtons({ options, currentValue, onChange, onClick }) {
           <input
             type="radio"
             value={catNum.code}
-            id={`${catNum}_${index}`}
+            id={`${catNum.code}_${index}`}
             checked={catNum.code === currentValue}
             onChange={onChange}
             onClick={onClick}
           />
-          <label htmlFor={`${catNum}_${index}`}>{`#${catNum.name}`}</label>
+          <label htmlFor={`${catNum.code}_${index}`}>{`#${catNum.name}`}</label>
         </div>
       ))}
     </>

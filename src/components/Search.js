@@ -55,39 +55,39 @@ const Search = ({ showSearch, goToSearchPage }) => {
           <input
             type="radio"
             value="A01"
-            id="A01"
+            id="SearchA01"
             checked={selectedContentType === 'A01'}
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A01">#자연</label>
+          <label htmlFor="SearchA01">#자연</label>
           <input
             type="radio"
             value="A02"
-            id="A02"
+            id="SearchA02"
             checked={selectedContentType === 'A02'}
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A02">#인문(문화/예술/역사)</label>
+          <label htmlFor="SearchA02">#인문(문화/예술/역사)</label>
           <input
             type="radio"
             value="A03"
-            id="A03"
+            id="SearchA03"
             checked={selectedContentType === 'A03'}
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A03">#레포츠</label>
+          <label htmlFor="SearchA03">#레포츠</label>
           <input
             type="radio"
             value="A04"
-            id="A04"
+            id="SearchA04"
             checked={selectedContentType === 'A04'}
             onChange={handleContentType}
             onClick={checkOutRadio}
           />
-          <label htmlFor="A04">#쇼핑</label>
+          <label htmlFor="SearchA04">#쇼핑</label>
         </SelectForm>
       </div>
     </SearchSection>

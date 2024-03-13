@@ -62,10 +62,6 @@ function Filter({ showFilter }) {
     setFilterCat2();
   }, [cat2]);
 
-  console.log('cat1: ', cat1, 'cat2: ', cat2, 'cat3: ', cat3);
-  console.log('cat2List: ', cat2List);
-  console.log('cat3List: ', cat3List);
-
   return (
     <FilterSection $showFilter={!showFilter}>
       <CateSection>
@@ -115,7 +111,7 @@ const FilterSection = styled.div`
 `;
 
 const CateSection = styled.div`
-  /* display: flex;
+  display: flex;
   padding: 20px;
   padding-bottom: 0;
 
@@ -147,5 +143,5 @@ const CateSection = styled.div`
     border-color: ${({ theme }) => theme.colors.hover};
     background-color: ${({ theme }) => theme.colors.base};
     font-weight: 600;
-  } */
+  }
 `;
