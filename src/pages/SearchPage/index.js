@@ -1,8 +1,10 @@
 import axios from '../../api/axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import SearchTab from '../../components/SearchTab';
+
 import request from '../../api/request';
 import { useSelector } from 'react-redux';
+
 
 const SearchPage = () => {
   const [data, setData] = useState([]);
@@ -24,6 +26,7 @@ const SearchPage = () => {
   }, []);
   // const searchParams = useSelector((state) => state.searchParams);
   // console.log('store: ' + searchParams);
+
   useEffect(() => {
     (async () => {
       await fetchData();
@@ -37,6 +40,7 @@ const SearchPage = () => {
       <SearchTab title="팝업스토어" id="PS" url={request.fetchFestivals} />
       <SearchTab title="플리마켓" id="FM" url={request.fetchAreaBased} />
       <SearchTab title="페스티벌" id="FV" url={request.fetchFestivals} />
+
     </div>
   );
 };

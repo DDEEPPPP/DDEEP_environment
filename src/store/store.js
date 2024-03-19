@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import listFilterParams from './listFilterParams';
+
 import searchParams from './searchParams';
 
 export default configureStore({
