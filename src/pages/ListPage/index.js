@@ -10,6 +10,7 @@ import LoadingBar from '../../components/Loading';
 import Filter from '../../components/Filter';
 import { faArrowDownShortWide, faArrowUpShortWide } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 
 function ListPage() {
   // Filter 컴포넌트 on/off
@@ -56,18 +57,18 @@ function ListPage() {
     return eventState;
   };
 
+  const filterParams = useSelector((state) => state.listFilterParams.params);
+
   //가져온 fetchType, typeId 에 따라 API호출
   const fetchList = useCallback(async () => {
     setLoading(false);
     try {
       let response;
-      let params = {
-        areaCode: '39',
-        numOfRows: '9999',
-      };
+      let params = { areaCode: '39', numOfRows: '9999' };
       if (typeId === 'RM') {
         params = {
           ...params,
+          ...filterParams,
           // 관광명소
           contentTypeId: '12',
         };
@@ -75,17 +76,19 @@ function ListPage() {
       if (typeId === 'CC') {
         params = {
           ...params,
+          ...filterParams,
+
           // 문화시설
           contentTypeId: '14',
         };
       }
       if (typeId === 'FV') {
         params = {
-          ...params,
           // 축제 필수 파라미터 시작날짜
           eventStartDate: '19900101',
         };
       }
+
       response = await axios.get(`/${contentType}`, { params });
       const datasArray = response?.data?.response?.body?.items?.item || [];
       // 축제일때 현재 날짜 오픈 체크
@@ -103,7 +106,7 @@ function ListPage() {
     } catch (error) {
       console.log(error);
     }
-  }, [contentType, typeId, pageNo]);
+  }, [contentType, typeId, pageNo, filterParams]);
   // 페이지 이동 함수
   const navigate = useNavigate();
   const onPageChange = (newPage) => {
@@ -149,18 +152,22 @@ function ListPage() {
         </ul>
       </SideMenu>
       <MainContainer>
+        {typeId === 'FV' ? (
+          <></>
+        ) : (
+          <FilterContainer>
+            <FilterBtn onClick={handleFilter}>
+              {showFilter ? (
+                <FontAwesomeIcon icon={faArrowDownShortWide} />
+              ) : (
+                <FontAwesomeIcon icon={faArrowUpShortWide} />
+              )}
+            </FilterBtn>
+            <Filter showFilter={showFilter} />
+          </FilterContainer>
+        )}
         {loading ? (
           <>
-            <FilterContainer>
-              <FilterBtn onClick={handleFilter}>
-                {showFilter ? (
-                  <FontAwesomeIcon icon={faArrowDownShortWide} />
-                ) : (
-                  <FontAwesomeIcon icon={faArrowUpShortWide} />
-                )}
-              </FilterBtn>
-              <Filter showFilter={showFilter} />
-            </FilterContainer>
             <CardSection>
               {listDatas.map((data) => (
                 <Card url={`/${contentType}`} data={data} key={data.contentid} />

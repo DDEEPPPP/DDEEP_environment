@@ -3,8 +3,8 @@ import { useState } from 'react';
 export const useFilterCate = (initialValue) => {
   const [selectedValue, setSelectedValue] = useState(initialValue);
 
-  const handleCate = (event) => {
-    setSelectedValue(event.target.value);
+  const handleCate = (value) => {
+    setSelectedValue(value);
   };
 
   const checkedOutRadio = (event) => {
